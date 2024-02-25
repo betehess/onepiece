@@ -1,0 +1,78 @@
+@prefix owl:      <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh:       <http://www.w3.org/ns/shacl#> .
+@prefix skos:     <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema:   <http://schema.org/> .
+
+@prefix onepiece: <https://bertails.org/ns/onepiece#> .
+
+onepiece:
+    a owl:Ontology ;
+    sh:declare   [ sh:prefix    "onepiece" ;
+                   sh:namespace "https://bertails.org/ns/onepiece#"^^xsd:anyURI ; ] ;
+.
+
+onepiece:Character
+    a                rdfs:Class ;
+    rdfs:label       "Character"@en ;
+    rdfs:comment     "All characters of the World of One Piece."@en ;
+    rdfs:isDefinedBy onepiece: ;
+.
+
+onepiece:charName
+    a                     rdf:Property ;
+    rdfs:label            "name"@en ;
+    rdfs:comment          "The name of the character."@en ;
+    schema:domainIncludes onepiece:Character ;
+    rdfs:isDefinedBy      onepiece: ;
+.
+
+onepiece:charStatus
+    a                rdf:Property ;
+    rdfs:label       "status"@en ;
+    rdfs:comment     "Whether character is alive or not."@en ;
+    rdfs:isDefinedBy onepiece: ;
+.
+
+onepiece:CharacterShape
+    a                sh:NodeShape ;
+    sh:targetClass   onepiece:Character ;
+    rdfs:label       "Characters Shape"@en ;
+    rdfs:comment     "A shape describing characters."@en ;
+    sh:property      onepiece:CharacterShape-name ;
+    sh:property      onepiece:CharacterShape-status ;
+    rdfs:isDefinedBy onepiece: ;
+.
+
+onepiece:CharacterShape-name
+    a              sh:PropertyShape ;
+    sh:path        onepiece:charName ;
+    sh:name        "name"@en ;
+    sh:description "The name of the character."@en ;
+    sh:datatype    xsd:string ;
+    sh:minCount    1 ;
+    sh:maxCount    1 ;
+.
+
+onepiece:CharacterShape-status
+    a              sh:PropertyShape ;
+    sh:name        "status"@en ;
+    sh:path        onepiece:charStatus ;
+    sh:description "Whether character is alive or not."@en ;
+    sh:datatype    xsd:string ;
+    sh:in          ( "alive" "deceased" "unknown" ) ;
+    sh:minCount    1 ;
+    sh:maxCount    1 ;
+.
+
+
+onepiece:Human
+    a                rdfs:Class, sh:NodeShape ;
+    rdfs:subClassOf  onepiece:Character ;
+    sh:targetClass   onepiece:Human ;
+    skos:prefLabel   "Human"@en ;
+    skos:definition  "Human beings are the dominant race in the world."@en ;
+    rdfs:isDefinedBy onepiece: ;
+.
